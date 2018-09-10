@@ -5,26 +5,36 @@ class Users extends React.Component{
         super();
 
         this.state= {
-            data: {}
+            usuarios: []
         }
     }
 
-    componentDidMount(){
-        fetch('https://jsonplaceholder.typicode.com/users/1')
-        .then(response => response.json())
-        .then(data => this.setState({data}));
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+          .then(response => response.json())
+          .then(res => {
+            let usuarios = res.map(obj => obj);
+            this.setState({ usuarios });
+            console.log(usuarios);
+          });
+    
     }
 
     render(){
-        console.log(this.state.data.address)
-        return(
-            <article>
-                <h2>{this.state.data.name}</h2>
-                <p>{this.state.data.username}</p>
-                <p>{this.state.data.email}</p>
-            </article>
-        );
+        return (
+            this.state.usuarios.map(function (data) {
+              return <div key={data.id}>
+                <h1>{data.name}</h1>
+                <p>Email: {data.email}</p>
+                <p>Empresa: {data.company.name}</p>
+                <p>Ciudad: {data.address.city}</p>
+                <hr />
+              </div>
+            })
+      
+          );
+        }
     }
-}
+
 
 export default Users;
